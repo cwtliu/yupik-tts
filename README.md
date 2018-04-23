@@ -6,3 +6,7 @@ The planned layout
 ex. pissuryullrunrituk -> pissur yull run ri tuk
 3) Search for phoneme audio clip
 4) Concatenate phoneme sounds to form a word
+
+
+audiofiles directory
+any unit file with a 1 shows a 'hard' consonant so rr instead of r
