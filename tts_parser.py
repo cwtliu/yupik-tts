@@ -2,6 +2,8 @@
 # -*- coding:utf-8 -*-
 # Author: cwtliu
 
+# This function converts a word into its pronunciation syllables, including stress and gemination cases.
+
 import argparse
 from letters import *
 
@@ -33,7 +35,7 @@ def assign_stressed_vowels(single_word):
 		for i, letter in enumerate(single_word):
 			if letter in v:
 				if first_vowel: #rhythmic stress rule 1
-					if word_length-i > 2 and single_word[i+1] in c and single_word[i+2] in c: 
+					if word_length-i > 2 and single_word[i+1] in c and (single_word[i+2] in c or single_word[i+2] == "'"): 
 						single_word[i] = letter.upper()
 						stress_next_vowel = False
 					elif (word_length-i > 3 and single_word[i+1] in c and single_word[i+2] in v and single_word[i+3] in v) or (word_length-i > 3 and single_word[i+1] in c and single_word[i+2] == "'" and single_word[i+3] in v): # geminated
@@ -132,6 +134,9 @@ def chunk_syllables(geminated_wordform):
 			skip = False
 		elif word_length-i == 1: # if last character
 			syllable_wordform.append(geminated_wordform[last_index:i+1][::-1])
+		elif geminated_wordform[i] == "'":
+			syllable_wordform.append("'")
+			last_index = i+1
 		elif geminated_wordform[i+1] in c:
 			syllable_wordform.append(geminated_wordform[last_index:i+2][::-1])
 			skip = True
@@ -158,7 +163,6 @@ def voiceless_shift(syllable_wordform):
 	if syllable_wordform[-1] == "'":
 		del syllable_wordform[-1]
 
-
 	syllable_length = len(syllable_wordform)
 	if syllable_wordform[0] != "'" and syllable_wordform[-1] != "'": #just a double check in case there are multiple apostrophes at the ends
 		#proceed
@@ -171,32 +175,26 @@ def voiceless_shift(syllable_wordform):
 			double_skip = False
 			skip = False
 			for i, syllable in enumerate(syllable_wordform):
-				if double_skip: #assuming the v ' v condition was called
+				
+				if syllable_length-i == 1: #if last entry
+					syllable_lookup_format.append(''.join(syllable_wordform[i]))
+				elif double_skip: #assuming the v ' v condition was called
 					double_skip = False
 					skip = True
 				else:
 					if skip:
 						skip = False
 					else:
-						if syllable_length-i == 1: #if last entry
-							syllable_lookup_format.append(syllable_wordform[i])
-						elif syllable_wordform[i+1] == "'":
+						if syllable_wordform[i+1] == "'":
 							if syllable_wordform[i][-1] in v and syllable_wordform[i+2][0] in v: #if v ' v  then append surrounding syllables
-								syllable_lookup_format.append(syllable_wordform[i]+syllable_wordform[i+2])
+								syllable_lookup_format.append(''.join(syllable_wordform[i]+syllable_wordform[i+2]))
 								double_skip = True
 							elif syllable_wordform[i][-1] in c and syllable_wordform[i+2][0] in v: # if c ' v gemination, add the consonant to the right side
-								print(syllable_wordform[i])
-								print(syllable_wordform[i+2])
-								print(syllable_wordform[i][-1])
-								print([syllable_wordform[i][-1]]+syllable_wordform[i+2])
-								#syllable_lookup_format.append(syllable_wordform[i]+syllable_wordform[i+2].insert(0,syllable_wordform[i][-1]))
-								syllable_lookup_format.append(syllable_wordform[i])
-								syllable_lookup_format.append([syllable_wordform[i][-1]]+syllable_wordform[i+2])
-								print(syllable_lookup_format)
+								syllable_lookup_format.append(''.join(syllable_wordform[i]))
+								syllable_wordform[i+2] = [syllable_wordform[i][-1]]+syllable_wordform[i+2]
 								skip = True	
-							elif syllable_wordform[i][-1] in c and syllable_wordform[i+2][0] in c:
-								syllable_lookup_format.append(syllable_wordform[i])
-								syllable_lookup_format.append([syllable_wordform[i][-1]]+syllable_wordform[i+2])
+							elif syllable_wordform[i][-1] in c and syllable_wordform[i+2][0] in c: # if c ' c gemination, no effect
+								syllable_lookup_format.append(''.join(syllable_wordform[i]))
 								skip = True									
 							else:
 								raise ValueError('this is a rogue apostrophe that doesn\'t follow conventions') 
@@ -233,12 +231,12 @@ def parser(word):
 		single_word = process_enclitics(single_word)
 	print(single_word)
 	single_word = assign_stressed_vowels(single_word)
-	#print(single_word)
+	print(single_word)
 	geminated_wordform = add_gemination(single_word)
 	#geminated_wordform = ['a','p','A',"'",'u','r','l','u','q']
-	#print(geminated_wordform)
+	print(geminated_wordform)
 	syllable_wordform = chunk_syllables(geminated_wordform)
-	#print(syllable_wordform)
+	print(syllable_wordform)
 	#print('mark')
 	syllable_lookup_format = voiceless_shift(syllable_wordform)
 	#print(syllable_lookup_format)
