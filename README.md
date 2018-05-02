@@ -12,3 +12,20 @@ ex. pissuryullrunrituk -> pissur yull run ri tuk
 
 audiofiles directory
 any unit file with a 1 shows a 'hard' consonant so rr instead of r
+
+advice on pitch replication:
+dynamic time warping
+time scaling — frequency scale followed by resampling
+
+change the resampling factor
+find a pitch of utterance
+do frequency scaling of 440 divided by that pitch
+
+time scale of 1 over duration
+resampling by one over the duration
+
+estimation of f0 in the frame
+time varying frequency scale to pull out pitch variation
+time scaling as a second pass
+
+kalman filter
