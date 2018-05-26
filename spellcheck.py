@@ -20,7 +20,7 @@ def spellcheck(word):  #returns true when all spell checks have passed, otherwis
     elif re.search(r"([glrsv])\1\1|([ckmnpqtwy])\2", word): #two or more non-fricatives or 3 or more fricatives
         print("consonant combination error")
         return False
-    elif re.search(r"[ckpqt]([glrsv])\1|([glrsv])\2[ckpqt]", word): #stop followed/preceded by two or more fricatves
+    elif re.search(r"[ckpqt]'*([glrsv])\1|([glrsv])\2'*[ckpqt]", word): #stop followed/preceded by two or more fricatves
         print("stop devoicing error")
         return False
     elif re.search(r"([glrsv])\1([glrsv])\2", word):
@@ -32,4 +32,4 @@ def spellcheck(word):  #returns true when all spell checks have passed, otherwis
     else:
         return True
 
-print(spellcheck("ayaggtuq"))
+print(spellcheck("ayagg'tuq"))
