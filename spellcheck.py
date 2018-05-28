@@ -3,8 +3,8 @@ Spellcheck for Yup'ik words. Looks for English letters, illegal characters & com
 corrections
 """
 
-__author__ = "Baxter Bond"
-__version__ = "0.0.0"
+#__author__ = "Baxter Bond"
+#__version__ = "0.0.0"
 
 import re
 
@@ -32,4 +32,4 @@ def spellcheck(word):  #returns true when all spell checks have passed, otherwis
     else:
         return True
 
-print(spellcheck("ayagg'tuq"))
+#print(spellcheck("ayagg'tuq"))
