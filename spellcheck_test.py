@@ -17,3 +17,4 @@ for word in wordlist:
 		print(word)
 		errors += 1
 print("{} total Errors out of {} entries, {} percent accuracy".format(int(errors), total, (total-errors)/total))
+print(spellcheck('clearance'))

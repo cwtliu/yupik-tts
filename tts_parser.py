@@ -12,7 +12,7 @@ def process_enclitics(word):
 	Not yet able to process enclitics
 	"""
 	word = word.split('-')
-	print(word)
+	#print(word)
 	return(''.join(word[0]))
 
 
@@ -229,14 +229,14 @@ def parser(word):
 	#single_word = ['c', 'e', '8', 'I', 'r', 't', 'u', 'q']
 	if "-" in single_word:
 		single_word = process_enclitics(single_word)
-	print(single_word)
+	#print(single_word)
 	single_word = assign_stressed_vowels(single_word)
-	print(single_word)
+	#print(single_word)
 	geminated_wordform = add_gemination(single_word)
 	#geminated_wordform = ['a','p','A',"'",'u','r','l','u','q']
-	print(geminated_wordform)
+	#print(geminated_wordform)
 	syllable_wordform = chunk_syllables(geminated_wordform)
-	print(syllable_wordform)
+	#print(syllable_wordform)
 	#print('mark')
 	syllable_lookup_format = voiceless_shift(syllable_wordform)
 	#print(syllable_lookup_format)
